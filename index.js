@@ -46,7 +46,7 @@ const LAST_UPDATE_EN = "Last updated on";
 const PAGE_STRING_REGEX = /^第 [0-9]* 頁，共 [0-9]* 頁$/;
 const DATE_REGEX = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
 
-let dataBuffer = fs.readFileSync("./pdf/599c_tc.pdf");
+let dataBuffer = fs.readFileSync("./pdf/599c_tc_20200226.pdf");
 
 function render_page(pageData) {
   //check documents https://mozilla.github.io/pdf.js/
@@ -68,7 +68,7 @@ function render_page(pageData) {
 
           // when the content is "date", it should be the last of a "row"
           if (content.match(DATE_REGEX)) {
-            const obj = parseRow(row);
+            const obj = parseRow2(row);
             text += JSON.stringify(obj) + ",\n";
             row = [];
           }
@@ -103,14 +103,69 @@ function parseRow(arr) {
     needCombine = true;
   }
 
-  const districtENStart = arr[0].indexOf(districtTC) + districtTC.length;
+  const districtENStart = arr[0].indexOf(districtTC); // + districtTC.length;
   let districtEN = "";
 
   if (needCombine) {
     districtEN = arr[0].substring(districtENStart + 1, arr[0].length);
     districtEN = districtEN + " " + arr[1];
+    districtEN = fixDistrict(districtEN);
   } else {
     districtEN = arr[0].substring(districtENStart, getLength(id, districtTC));
+    districtEN = fixDistrict(districtEN);
+  }
+
+  // combine all except last part
+  const newArray = arr.slice();
+
+  // remove "date"
+  newArray.pop();
+  const s = newArray.join(" ");
+  const addressStart = s.indexOf(districtEN) + districtEN.length;
+  const addr = s.substring(addressStart);
+
+  // last element is date
+  const date = arr[arr.length - 1];
+
+  const obj = {
+    id: id,
+    districtTC: districtTC,
+    districtEN: districtEN.trim(),
+    address: addr.trim(),
+    date: date
+  };
+
+  return obj;
+}
+
+function parseRow2(arr) {
+  //   console.log(arr);
+  let needCombine = false;
+  //   console.log(arr);
+
+  // split by space (multiple)
+  const ele1 = arr[1].trim().split(/ +/);
+
+  // first element is ID
+  const id = arr[0];
+
+  // second element is district (TC)
+  const districtTC = ele1[0];
+
+  // if need combine with next line, the length is cut short
+  if (arr[1].length <= 13) {
+    needCombine = true;
+  }
+
+  const districtENStart = arr[1].indexOf(districtTC) + districtTC.length;
+  let districtEN = "";
+
+  if (needCombine) {
+    districtEN = arr[1].substring(districtENStart + 1, arr[1].length);
+    districtEN = districtEN + " " + arr[2];
+    districtEN = fixDistrict(districtEN);
+  } else {
+    districtEN = arr[1].substring(districtENStart);
     districtEN = fixDistrict(districtEN);
   }
 
@@ -169,13 +224,6 @@ function filterContent(content) {
   }
   return null;
 }
-
-/**
- * Parse content to JSON,
- * sample date line:
- * @param {*} content
- */
-function content2Json(content) {}
 
 pdf(dataBuffer, options).then(function(data) {
   // number of pages

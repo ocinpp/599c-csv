@@ -10,7 +10,15 @@ Prepare a `.env` file as below
 PDF_FILE_PATH=<Path to PDF>
 ```
 
-## Sample
+## Usage
+
+As the result is now printed using `console.log`, you may need to redirect the output to a file
+
+```bash
+node index.js > result.csv
+```
+
+## Sample Output
 
 ```csv
 "id","districtTC","districtEN","address","date"

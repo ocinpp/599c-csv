@@ -1,5 +1,7 @@
 # 599C CSV Generator
 
+[![Known Vulnerabilities](https://snyk.io/test/github/ocinpp/599c-csv/badge.svg?targetFile=package.json)](https://snyk.io/test/github/ocinpp/599c-csv?targetFile=package.json)
+
 Convert the 599C PDF file to a csv file.
 
 ## Setup

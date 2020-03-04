@@ -2,11 +2,17 @@
 
 [![Known Vulnerabilities](https://snyk.io/test/github/ocinpp/599c-csv/badge.svg?targetFile=package.json)](https://snyk.io/test/github/ocinpp/599c-csv?targetFile=package.json)
 
-Convert the 599C PDF file to a csv file.
+Convert the 599C PDF file [at https://www.chp.gov.hk/files/pdf/599c_tc.pdf](https://www.chp.gov.hk/files/pdf/599c_tc.pdf) to a csv file.
 
 ## Setup
 
-Prepare a `.env` file as below
+Clone the repository and install the dependencies.
+
+```bash
+npm install
+```
+
+Prepare a `.env` file as below.
 
 ```properties
 PDF_FILE_PATH=<Path to PDF>
@@ -14,7 +20,7 @@ PDF_FILE_PATH=<Path to PDF>
 
 ## Usage
 
-As the result is now printed using `console.log`, you may need to redirect the output to a file
+As the result is now printed using `console.log`, you may need to redirect the output to a file.
 
 ```bash
 node index.js > result.csv

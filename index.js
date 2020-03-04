@@ -48,7 +48,7 @@ const LAST_UPDATE_EN = "Last updated on";
 const PAGE_STRING_REGEX = /^第 [0-9]* 頁，共 [0-9]* 頁$/;
 const DATE_REGEX = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
 
-let dataBuffer = fs.readFileSync(process.env.PDF_FILE_PATH);
+const dataBuffer = fs.readFileSync(process.env.PDF_FILE_PATH);
 
 function render_page(pageData) {
   //check documents https://mozilla.github.io/pdf.js/

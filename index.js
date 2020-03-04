@@ -1,3 +1,4 @@
+require("dotenv").config();
 const fs = require("fs");
 const pdf = require("pdf-parse");
 const { parse } = require("json2csv");
@@ -10,6 +11,7 @@ const REMOVE_STRING = [
   "Address",
   "檢疫最後日期 (日/月/年)",
   "End date of quarantine order",
+  "End date of quarantine period",
   "(DD/MM/YYYY)",
   "備註：",
   "基於隱私考慮，顯示的地址並不代表完整地址。",
@@ -46,7 +48,7 @@ const LAST_UPDATE_EN = "Last updated on";
 const PAGE_STRING_REGEX = /^第 [0-9]* 頁，共 [0-9]* 頁$/;
 const DATE_REGEX = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
 
-let dataBuffer = fs.readFileSync("./pdf/599c_tc_20200226.pdf");
+let dataBuffer = fs.readFileSync(process.env.PDF_FILE_PATH);
 
 function render_page(pageData) {
   //check documents https://mozilla.github.io/pdf.js/

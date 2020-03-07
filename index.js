@@ -48,7 +48,10 @@ const LAST_UPDATE_EN = "Last updated on";
 const PAGE_STRING_REGEX = /^第 [0-9]* 頁，共 [0-9]* 頁$/;
 const DATE_REGEX = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
 
-const dataBuffer = fs.readFileSync(process.env.PDF_FILE_PATH);
+const sourceFilePath = process.env.PDF_FILE_PATH;
+const parseMethod = process.env.PARSE_METHOD;
+
+const dataBuffer = fs.readFileSync(sourceFilePath);
 
 function render_page(pageData) {
   //check documents https://mozilla.github.io/pdf.js/
@@ -70,7 +73,7 @@ function render_page(pageData) {
 
           // when the content is "date", it should be the last of a "row"
           if (content.match(DATE_REGEX)) {
-            const obj = parseRow2(row);
+            const obj = parseRow(row);
             text += JSON.stringify(obj) + ",\n";
             row = [];
           }
@@ -87,7 +90,20 @@ let options = {
   pagerender: render_page
 };
 
+/**
+ * Parse the row content to an array
+ */
 function parseRow(arr) {
+  if (parseMethod == 1) {
+    return parseRow1(arr);
+  } else if (parseMethod == 2) {
+    return parseRow2(arr);
+  } else {
+    return parseRow1(arr);
+  }
+}
+
+function parseRow1(arr) {
   let needCombine = false;
   //   console.log(arr);
 

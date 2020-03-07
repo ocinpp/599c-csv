@@ -26,6 +26,12 @@ As the result is now printed using `console.log`, you may need to redirect the o
 node index.js > result.csv
 ```
 
+If the output is not parsed correctly, you may switch to another parsing method by switching the below property in `.env`
+
+```properties
+PARSE_METHOD=<1 or 2>
+```
+
 ## Sample Output
 
 ```csv

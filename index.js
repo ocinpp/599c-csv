@@ -228,18 +228,6 @@ function filterContent(content) {
 }
 
 pdf(dataBuffer, options).then(function(data) {
-  // number of pages
-  //   console.log(data.numpages);
-  // number of rendered pages
-  //   console.log(data.numrender);
-  // PDF info
-  //   console.log(data.info);
-  // PDF metadata
-  //   console.log(data.metadata);
-  // PDF.js version
-  // check https://mozilla.github.io/pdf.js/getting_started/
-  //   console.log(data.version);
-  // PDF text
   const text = data.text;
   const cleanText = text.trim().replace(/\n\n/g, "");
   const json2 = "[" + cleanText.substring(0, cleanText.length - 1) + "]";
